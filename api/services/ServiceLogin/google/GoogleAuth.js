@@ -5,7 +5,6 @@ class GoogleAuthService{
     constructor(config,scope){
         this.config = config;
         this.scope = scope;
-        this.auth =this.createConnection();
     }
     async createConnection() {
         return await new google.auth.OAuth2(
@@ -55,4 +54,4 @@ module.exports = GoogleAuthService;
 const GoogleUserService = require('./GoogleUserDataLayer');
 let gu = new GoogleUserService(googleConfig,defaultScope);
 // gu.getGoogleUrl().then((res)=> {console.log(res);}).catch((err)=> {console.log(err);});
-gu.getGoogleAccountFromCode('4/vgBWm5Bww8Z2IPGM8NUhzReeMGMGAcmiE6gbwy6Pbzx3-SuQaaSNSkULi9TCXk_nAj37WJDNk37zsKHv4yC26Gs').then((res)=> console.log(res)).catch((err)=>{console.log(err)});
+gu.getGoogleAccountFromCode('4/vgAvmWplydU-G5EVOM-MUM80PpBXhNOeWnxMuRNiTCO-trI9QPNf7gnVpyuzDctxAEBS_1YaPURidQsh0L5agWU').then((res)=> console.log(res)).catch((err)=>{console.log(err)});
