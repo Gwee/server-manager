@@ -1,19 +1,47 @@
-const GoogleAuth = require('./GoogleAuth');
-const {google} = require('googleapis');
-
-    class GoogleUserService extends GoogleAuth {
+const GoogleAuthService = require('./GoogleAuth'),
+    {google} = require('googleapis'),
+    mongoose = require('mongoose'),
+    User = mongoose.model('Users');
+    class GoogleUserService extends GoogleAuthService {
     constructor(config, scope) {
         super(config, scope);
+        // this.userModel = mongoose.model('Users');
     }
 
     async getGooglePlusApi(auth) {
         return await google.plus({version: 'v1', auth});
     }
 
+    userLogin (user, code){
+        this.getGoogleAccountFromCode(code)
+            .then((res)=>{
+                return res
+            })
+            .catch((err)=>{
+
+            });
+    }
+    async getNewUser(code){
+        return await this.getGoogleAccountFromCode(code)
+            .then((newUser)=>{
+                return new User ({
+                    _id: newUser.id,
+                    first_name: newUser.name.givenName,
+                    last_name: newUser.name.familyName,
+                    email: newUser.email,
+                    // tokens: newUser.tokens.map(function(token){ //TODO: test this
+                    //     return token
+                    // })
+                });
+            })
+            .catch((err)=>{
+                console.log(err)
+            });
+    }
+
     /**
      * Extract the email and id of the google account from the "code" parameter.
      */
-
     async getGoogleAccountFromCode(code) {
         // get the auth "tokens" from the request
         const auth = await super.createConnection();
@@ -21,12 +49,21 @@ const {google} = require('googleapis');
         const tokens = data.tokens;
 
         // add the tokens to the google api so we have access to the account
-        //const auth = super.auth.createConnection();
         auth.setCredentials(tokens);
 
         // connect to google plus - need this to get the user's email
         const plus = await this.getGooglePlusApi(auth);
-        const me = await plus.people.get({userId: 'me'});
+        return await this.getUserFromGoogleApi(plus, tokens)
+            .then((res)=>{
+                return res
+        })
+            .catch((err)=>{
+                console.log("Failed to get user from plus API - %v", err)
+            })
+    }
+
+    async getUserFromGoogleApi(api, tokens){
+        const me = await api.people.get({userId: 'me'});
 
         // get the google id and email
         const userGoogleId = me.data.id;

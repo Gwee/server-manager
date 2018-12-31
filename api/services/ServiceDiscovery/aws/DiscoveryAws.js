@@ -1,6 +1,4 @@
-const DiscoverySource = require('../AbstractDiscoveryService'),
-    mongoose = require('mongoose'),
-    Server = require('../../../db/models/ServerModel');
+const DiscoverySource = require('../AbstractDiscoveryService');
 process.env.AWS_PROFILE= '~/.aws/credentials';
 var AWS = require('aws-sdk'),
     credentials = new AWS.SharedIniFileCredentials({profile: 'default'});
@@ -31,20 +29,20 @@ class AwsDiscoverySource extends DiscoverySource{
         let serverList = [];
         servers.Reservations.forEach(server=>{
             server.Instances.forEach(instance=>{
-                serverList.push(new Server(this.createNewAwsServer(instance)))
+                serverList.push(this.createNewAwsServer(instance))
             })
         });
         return serverList;
     }
     createNewAwsServer(instance){
-        return {
+        return ({
             discovered_date : Date.now(),
             ip_addr : instance.PrivateIpAddress,
             dns_name : instance.PrivateDnsName,
             status : instance.State.Name, //TODO: check if values are ok with the enum we defined in serverModel
             name: this.getAwsInstanceName(instance.Tags)
             //TODO: check other AWS server properties
-        }
+        })
     }
     getAwsIpAddresses(ipAddresses){ //TODO: fix this
         let retIpAddressArr = [];

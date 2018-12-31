@@ -5,7 +5,7 @@ var express = require('express'),
     bodyParser = require('body-parser');
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/Servermanagerdb',{ useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/Servermanagerdb',{ useNewUrlParser: true });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

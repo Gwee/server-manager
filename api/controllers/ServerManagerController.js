@@ -1,7 +1,7 @@
-'use strict';
-
+//'use strict';
+require("../db/models/ServerModel");
 var mongoose = require('mongoose'),
-    Server = mongoose.model('Servers');
+     Server = mongoose.model('Servers');
 
 exports.getServers = function(req, res) {
     Server.find({}, function(err, task) {
@@ -10,9 +10,6 @@ exports.getServers = function(req, res) {
         res.json(task);
     });
 };
-
-
-
 
 exports.updateServers = function(req, res) {
     let new_server = new Server(req.body);

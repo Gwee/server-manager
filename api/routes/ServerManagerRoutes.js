@@ -1,16 +1,20 @@
 'use strict';
 module.exports = function(app) {
-    let serverManager = require('../controllers/ServerManagerController'),
-    userAuth = require('../controllers/UserAuthController');
+    var serverController = require('../controllers/ServerManagerController');
+         var userController = require('../controllers/UserAuthController');
 
     //serverManager Routes
     app.route('/servers')
-        .get(serverManager.getServers)
-        .post(serverManager.updateServers);
+        .get(serverController.getServers)
+        .post(serverController.updateServers);
 
+    app.route('/users')
+        .get(userController.getRegisteredUsers);
+    app.route('/register/')
+        .post(userController.registerNewUser);
 
     app.route('/servers/:serverId')
-        .get(serverManager.getServer)
-        .put(serverManager.updateServer)
-        .delete(serverManager.removeServer);
+        .get(serverController.getServer)
+        .put(serverController.updateServer)
+        .delete(serverController.removeServer);
 };
