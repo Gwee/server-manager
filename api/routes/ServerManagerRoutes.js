@@ -11,6 +11,7 @@ module.exports = function(app) {
     app.route('/users')
         .get(userController.getRegisteredUsers);
     app.route('/register/')
+        .get(userController.getGoogleUrl)
         .post(userController.registerNewUser);
 
     app.route('/servers/:serverId')

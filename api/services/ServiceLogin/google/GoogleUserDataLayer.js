@@ -5,7 +5,6 @@ const GoogleAuthService = require('./GoogleAuth'),
     class GoogleUserService extends GoogleAuthService {
     constructor(config, scope) {
         super(config, scope);
-        // this.userModel = mongoose.model('Users');
     }
 
     async getGooglePlusApi(auth) {
@@ -29,16 +28,18 @@ const GoogleAuthService = require('./GoogleAuth'),
                     first_name: newUser.name.givenName,
                     last_name: newUser.name.familyName,
                     email: newUser.email,
-                    // tokens: newUser.tokens.map(function(token){ //TODO: test this
-                    //     return token
-                    // })
+                    // tokens: this.getTokens(newUser)
                 });
             })
             .catch((err)=>{
                 console.log(err)
             });
     }
-
+    getTokens(user){
+        user.tokens.forEach(function(token){
+            return token
+        })
+    }
     /**
      * Extract the email and id of the google account from the "code" parameter.
      */

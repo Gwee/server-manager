@@ -53,5 +53,5 @@ module.exports = GoogleAuthService;
 //
 // const GoogleUserService = require('./GoogleUserDataLayer');
 // let gu = new GoogleUserService(googleConfig,defaultScope);
-// gu.getGoogleUrl().then((res)=> {console.log(res);}).catch((err)=> {console.log(err);});
+//gu.getGoogleUrl().then((res)=> {console.log(res);}).catch((err)=> {console.log(err);});
 // // gu.getNewUser('4/wQDhD99IBQ0DVukNinNWePvWYi4q3qUeEsr8s8eu47gLKOoHvugsNfLthIMQ2VCa5IVuGoAMC1lDI_-qFOSrm34').then((res)=> {console.log(res);}).catch((err)=> {console.log(err);});
